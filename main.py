@@ -50,27 +50,33 @@ for n in neighborhoods:
 # and the average total time for each neighborhood and store this into a list of dictionaries. 
 # Add a dictionary item to include the population data for all of Detroit in your combined list.
 
+averageByNeighborhood = []
+
 for neighborhood in neighborhoodsDict:
 
-    print(neighborhood)
+    # print(neighborhood)
  
     total_response_time = reduce(lambda x, y: x + float(y['totalresponsetime']), neighborhoodsDict[neighborhood], 0)
     avg_response_time = total_response_time/len(neighborhoodsDict[neighborhood])
-    print(f"Average responce time: {avg_response_time}")
+    # print(f"Average responce time: {avg_response_time}")
 
     total_dispatch_time = reduce(lambda x, y: x + float(y['dispatchtime']), neighborhoodsDict[neighborhood], 0)
     avg_dispatch_time = total_dispatch_time/len(neighborhoodsDict[neighborhood])
-    print(f"Average dispatch time: {avg_dispatch_time}")
+    # print(f"Average dispatch time: {avg_dispatch_time}")
 
     total_total_time = reduce(lambda x, y: x + float(y['totaltime']), neighborhoodsDict[neighborhood], 0)
     avg_total_time = total_total_time/len(neighborhoodsDict[neighborhood])
-    print(f"Average total time: {avg_total_time}\n")
+    # print(f"Average total time: {avg_total_time}\n")
 
+    averageByNeighborhood.append({neighborhood: {'average_responce_time': avg_response_time, 'average_dispatch_time': avg_dispatch_time, 'average_total_time': avg_total_time}}) 
 
 
 # Part 3: Create an Output JSON file
 # Using the JSON module, format your list of dictionaries as a JSON and
 #  test the output with the JSON lint website (https://jsonlint.com/) Write the tested JSON to a file.
 
+averageByNeighborhood_json = json.dumps(averageByNeighborhood)
 
+with open('averageByNeighborhood.json', 'w') as j_file:
+    j_file.write(averageByNeighborhood_json)
 
