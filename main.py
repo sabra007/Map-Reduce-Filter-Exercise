@@ -37,11 +37,7 @@ print(f"Average total time: {avg_total_time}")
 # Using lambda and Map functions, or lambda and Filter, 
 # divide the list of dictionaries into smaller lists of dictionaries separated by neighborhood. 
 # 
-# Using lambda and Reduce, find the average total response time for each neighborhood, the average dispatch time for each neighborhood, 
-# and the average total time for each neighborhood and store this into a list of dictionaries. 
-# Add a dictionary item to include the population data for all of Detroit in your combined list.
 
-neighborhood1 = list(filter(lambda row: row["neighborhood"] == "Brightmoor", data_clean_1))
 
 neighborhoods = list(set([row['neighborhood'] for row in data_clean_1]))
 
@@ -50,9 +46,26 @@ neighborhoodsDict = {}
 for n in neighborhoods:
     neighborhoodsDict[n] = list(filter(lambda row: row['neighborhood'] == n, data_clean_1))
 
+# Using lambda and Reduce, find the average total response time for each neighborhood, the average dispatch time for each neighborhood, 
+# and the average total time for each neighborhood and store this into a list of dictionaries. 
+# Add a dictionary item to include the population data for all of Detroit in your combined list.
 
+for neighborhood in neighborhoodsDict:
 
-# print(json.dumps(neighborhoodsDict, sort_keys=True, indent=4))
+    print(neighborhood)
+ 
+    total_response_time = reduce(lambda x, y: x + float(y['totalresponsetime']), neighborhoodsDict[neighborhood], 0)
+    avg_response_time = total_response_time/len(neighborhoodsDict[neighborhood])
+    print(f"Average responce time: {avg_response_time}")
+
+    total_dispatch_time = reduce(lambda x, y: x + float(y['dispatchtime']), neighborhoodsDict[neighborhood], 0)
+    avg_dispatch_time = total_dispatch_time/len(neighborhoodsDict[neighborhood])
+    print(f"Average dispatch time: {avg_dispatch_time}")
+
+    total_total_time = reduce(lambda x, y: x + float(y['totaltime']), neighborhoodsDict[neighborhood], 0)
+    avg_total_time = total_total_time/len(neighborhoodsDict[neighborhood])
+    print(f"Average total time: {avg_total_time}\n")
+
 
 
 # Part 3: Create an Output JSON file
@@ -61,7 +74,3 @@ for n in neighborhoods:
 
 
 
-# Part 4: Stretch Goal, T-test, and Excel
-# Read your JSON file into Excel. 
-# Utilizing the T-Test function, examine the neighborhood differences between the average total response times, 
-# the average dispatch times, and average total times. Write up a jargon-free summary of your investigation.
